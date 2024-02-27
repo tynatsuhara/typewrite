@@ -28,3 +28,12 @@ Your app is ready to be deployed!
 ## Deployment
 
 You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+
+## Credits
+
+Built using Solid.js. Typewriter font is [Cella](https://www.dafont.com/cella.font).
+
+Some other fonts which might be used in the future:
+https://www.dafont.com/underwood-champion.font
+https://www.dafont.com/another-typewriter.font
+https://www.dafont.com/afl-font-pespaye-no.font

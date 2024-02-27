@@ -1,34 +1,34 @@
+@font-face {
+  font-family: 'Cella';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cella.woff2') format('woff2');
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .App {
+  font-family: 'Cella', sans-serif;
+  font-size: 24px;
   text-align: center;
-  background-image: url('/images/paper.png');
+  background-image: url('images/paper.png');
+  background-size: 250px;
+  width: 100%;
+  height: 100%;
 }
 
-.logo {
-  animation: logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.Caret {
+  animation: blinker 1s step-start infinite;
 }
 
-.header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.link {
-  color: #b318f0;
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@keyframes blinker {
+  50% {
+    opacity: 0;
   }
 }
