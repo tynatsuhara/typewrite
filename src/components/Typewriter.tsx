@@ -40,11 +40,13 @@ export const Typewriter = () => {
       'text',
       (text) => text + key
     )
-    // trailing spaces don't measure properly
-    const shift = document.getElementById(id)!.clientWidth - initialWidth
-    console.log(shift)
-    setOffset(([x, y]) => [x - shift, y])
-    setCaretPosition(([x, y]) => [x + shift, y])
+    // if the mouse is down, don't do any shifting/animation stuff
+    if (!isMouseDown()) {
+      const shift = document.getElementById(id)!.clientWidth - initialWidth
+      console.log(shift)
+      setOffset(([x, y]) => [x - shift, y])
+      setCaretPosition(([x, y]) => [x + shift, y])
+    }
   }
 
   // Event handlers
@@ -64,7 +66,6 @@ export const Typewriter = () => {
         const [cx, cy] = caretPosition()
         setCaretPosition([cx - e.movementX, cy - e.movementY])
         // @ts-ignore
-        window['caretPos'] = caretPosition()
         // whenever the cursor moves, we need to create a new frame
         setNewFrame(true)
       }
@@ -102,12 +103,8 @@ export const Typewriter = () => {
       style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
     >
       <div
-        style={{
-          'text-wrap': 'nowrap',
-          position: 'absolute',
-          left: `${offset()[0]}px`,
-          top: `${offset()[1]}px`,
-        }}
+        class={`${styles.TextContainer} ${isMouseDown() ? styles.MouseDown : ''}`}
+        style={{ left: `${offset()[0]}px`, top: `${offset()[1]}px` }}
       >
         <Caret position={caretPosition()} />
 

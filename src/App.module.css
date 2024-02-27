@@ -33,7 +33,22 @@ body {
 
 .MovableType {
   position: absolute;
-  white-space-collapse: 'preserve';
+  white-space-collapse: preserve;
+}
+
+.TextContainer {
+  text-wrap: nowrap;
+  position: absolute;
+}
+
+.TextContainer,
+.Caret {
+  transition: left 0.5s ease;
+}
+
+.TextContainer.MouseDown,
+.TextContainer.MouseDown * {
+  transition: none !important;
 }
 
 .Caret {
