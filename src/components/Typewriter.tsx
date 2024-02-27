@@ -1,4 +1,5 @@
-import { onCleanup, onMount } from 'solid-js'
+import { createSignal } from 'solid-js'
+import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
 
 const VALID_KEYS = [
@@ -12,14 +13,24 @@ type Frame = {
 }
 
 export const Typewriter = () => {
-  const handleKeyPress = (e: Event) => {
-    if (e instanceof KeyboardEvent && VALID_KEYS.includes(e.key)) {
+  const [isMouseDown, setMouseDown] = createSignal(false)
+
+  const mousedown = () => setMouseDown(true)
+  const mouseup = () => setMouseDown(false)
+  const mousemove = () => (e: MouseEvent) => {
+    console.log(e.clientX)
+    console.log(e.clientY)
+  }
+  const keypress = (e: KeyboardEvent) => {
+    if (!e.repeat && VALID_KEYS.includes(e.key)) {
       console.log(e.key)
     }
   }
 
-  onMount(() => document.addEventListener('keypress', handleKeyPress))
-  onCleanup(() => document.removeEventListener('keypress', handleKeyPress))
+  onEvent('mousedown', mousedown)
+  onEvent('mouseup', mouseup)
+  onEvent('mousemove', mousemove)
+  onEvent('keypress', keypress)
 
   return (
     <>
