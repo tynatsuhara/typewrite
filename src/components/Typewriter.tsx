@@ -26,31 +26,50 @@ export const Typewriter = () => {
 
   const type = (key: string) => {}
 
+  const [isShiftDown, setShiftDown] = createSignal(false)
   const [isMouseDown, setMouseDown] = createSignal(false)
-  const [offset, setOffset] = createSignal<Vector2>([100, 100])
+  const { clientWidth, clientHeight } = document.body
+  const [offset, setOffset] = createSignal<Vector2>([clientWidth / 2, clientHeight * 0.3])
+  const [caretPosition, setCaretPosition] = createSignal<Vector2>([0, 0])
 
   const onMouseDown = () => setMouseDown(true)
   const onMouseUp = () => setMouseDown(false)
   const onMouseMove = (e: MouseEvent) => {
-    if (isMouseDown()) {
-      const [x, y] = offset()
-      setOffset([x + e.movementX, y + e.movementY])
+    // whenever the cursor moves, we need to create a new frame
+    if (!isMouseDown()) {
+      return
+    }
+    const [x, y] = offset()
+    setOffset([x + e.movementX, y + e.movementY])
+    if (!isShiftDown()) {
+      const [cx, cy] = caretPosition()
+      setCaretPosition([cx - e.movementX, cy - e.movementY])
     }
   }
-  const onKeyPress = (e: KeyboardEvent) => {
+  const onKeyDown = (e: KeyboardEvent) => {
     if (e.repeat) {
       return
     } else if (VALID_KEYS.includes(e.key)) {
       console.log(e.key)
     } else if (e.key === 'Enter') {
       console.log('enter')
+    } else if (e.key === 'Backspace') {
+      console.log('backspace')
+    } else if (e.key === 'Shift') {
+      setShiftDown(true)
+    }
+  }
+  const onKeyUp = (e: KeyboardEvent) => {
+    if (e.key === 'Shift') {
+      setShiftDown(false)
     }
   }
 
   onEvent('mousedown', onMouseDown)
   onEvent('mouseup', onMouseUp)
   onEvent('mousemove', onMouseMove)
-  onEvent('keypress', onKeyPress)
+  onEvent('keydown', onKeyDown)
+  onEvent('keyup', onKeyUp)
 
   return (
     <div
@@ -63,7 +82,7 @@ export const Typewriter = () => {
             <div style={{ position: 'relative', left: `${x}px`, top: `${y}px` }}>{text}</div>
           )}
         </For>
-        <Caret />
+        <Caret position={caretPosition()} />
       </div>
     </div>
   )
