@@ -31,9 +31,13 @@ body {
   height: 100%;
 }
 
+.MovableType {
+  position: absolute;
+  white-space-collapse: 'preserve';
+}
+
 .Caret {
   animation: blinker 1s step-start infinite;
-  position: absolute;
 }
 
 @keyframes blinker {

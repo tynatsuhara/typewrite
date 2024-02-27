@@ -30,14 +30,21 @@ export const Typewriter = () => {
     if (newFrame()) {
       setNewFrame(false)
       const [x, y] = caretPosition()
-      setFrames([...frames, { text: key, x, y }])
-    } else {
-      setFrames(
-        (f, i) => i === frames.length - 1,
-        'text',
-        (text) => text + key
-      )
+      setFrames([...frames, { text: '', x, y }])
     }
+
+    const id = `frame-${frames.length - 1}`
+    const initialWidth = document.getElementById(id)!.clientWidth ?? 0
+    setFrames(
+      (f, i) => i === frames.length - 1,
+      'text',
+      (text) => text + key
+    )
+    // trailing spaces don't measure properly
+    const shift = document.getElementById(id)!.clientWidth - initialWidth
+    console.log(shift)
+    setOffset(([x, y]) => [x - shift, y])
+    setCaretPosition(([x, y]) => [x + shift, y])
   }
 
   // Event handlers
@@ -52,6 +59,7 @@ export const Typewriter = () => {
       const [x, y] = offset()
       setOffset([x + e.movementX, y + e.movementY])
       // move the cursor if they're not holding down shift
+      // TODO: determine if there's a better way here — a toggle, probably?
       if (!isShiftDown()) {
         const [cx, cy] = caretPosition()
         setCaretPosition([cx - e.movementX, cy - e.movementY])
@@ -104,8 +112,15 @@ export const Typewriter = () => {
         <Caret position={caretPosition()} />
 
         <For each={frames}>
-          {(frame) => (
-            <div style={{ position: 'absolute', left: `${frame.x}px`, top: `${frame.y}px` }}>
+          {(frame, index) => (
+            <div
+              class={styles.MovableType}
+              style={{
+                left: `${frame.x}px`,
+                top: `${frame.y}px`,
+              }}
+              id={`frame-${index()}`}
+            >
               {frame.text}
             </div>
           )}
