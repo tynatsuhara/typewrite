@@ -1,4 +1,5 @@
-import { createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import styles from '../App.module.css'
 import { Vector2 } from '../types'
 import { onEvent } from '../utils/onEvent'
@@ -15,8 +16,18 @@ type Frame = {
 }
 
 export const Typewriter = () => {
+  const [frames, setFrames] = createStore<Array<Frame>>([
+    {
+      text: 'Example!',
+      x: 50,
+      y: 100,
+    },
+  ])
+
+  const type = (key: string) => {}
+
   const [isMouseDown, setMouseDown] = createSignal(false)
-  const [offset, setOffset] = createSignal<Vector2>([0, 0])
+  const [offset, setOffset] = createSignal<Vector2>([100, 100])
 
   const onMouseDown = () => setMouseDown(true)
   const onMouseUp = () => setMouseDown(false)
@@ -24,12 +35,15 @@ export const Typewriter = () => {
     if (isMouseDown()) {
       const [x, y] = offset()
       setOffset([x + e.movementX, y + e.movementY])
-      console.log(offset())
     }
   }
   const onKeyPress = (e: KeyboardEvent) => {
-    if (!e.repeat && VALID_KEYS.includes(e.key)) {
+    if (e.repeat) {
+      return
+    } else if (VALID_KEYS.includes(e.key)) {
       console.log(e.key)
+    } else if (e.key === 'Enter') {
+      console.log('enter')
     }
   }
 
@@ -43,7 +57,14 @@ export const Typewriter = () => {
       class={styles.Typewriter}
       style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
     >
-      <Caret offset={offset()} />
+      <div style={{ position: 'relative', left: `${offset()[0]}px`, top: `${offset()[1]}px` }}>
+        <For each={frames}>
+          {({ text, x, y }) => (
+            <div style={{ position: 'relative', left: `${x}px`, top: `${y}px` }}>{text}</div>
+          )}
+        </For>
+        <Caret />
+      </div>
     </div>
   )
 }
