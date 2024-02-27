@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
-import solidPlugin from 'vite-plugin-solid';
+import { defineConfig } from 'vite'
+import solidPlugin from 'vite-plugin-solid'
 // import devtools from 'solid-devtools/vite';
 
 export default defineConfig({
@@ -17,4 +17,6 @@ export default defineConfig({
   build: {
     target: 'esnext',
   },
-});
+  // the project is deployed at ty.pizza/typewrite, so we need to configure the base path
+  base: process.env.NODE_ENV === 'production' ? 'typewrite' : '/',
+})
