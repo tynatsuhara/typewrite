@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-        "module": "Node16",
-        "target": "ES2019",
-        "lib": ["DOM", "ESNext"],
-        "moduleResolution": "Node16",
-        "sourceMap": true,
-        "allowSyntheticDefaultImports": true
-    },
-    "ts-node": {
-        "compilerOptions": {
-            "module": "CommonJS"
-        }
-    }
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
+    "noEmit": true,
+    "isolatedModules": true,
+  },
 }
