@@ -1,4 +1,6 @@
 import { createSignal } from 'solid-js'
+import styles from '../App.module.css'
+import { Vector2 } from '../types'
 import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
 
@@ -14,27 +16,34 @@ type Frame = {
 
 export const Typewriter = () => {
   const [isMouseDown, setMouseDown] = createSignal(false)
+  const [offset, setOffset] = createSignal<Vector2>([0, 0])
 
-  const mousedown = () => setMouseDown(true)
-  const mouseup = () => setMouseDown(false)
-  const mousemove = () => (e: MouseEvent) => {
-    console.log(e.clientX)
-    console.log(e.clientY)
+  const onMouseDown = () => setMouseDown(true)
+  const onMouseUp = () => setMouseDown(false)
+  const onMouseMove = (e: MouseEvent) => {
+    if (isMouseDown()) {
+      const [x, y] = offset()
+      setOffset([x + e.movementX, y + e.movementY])
+      console.log(offset())
+    }
   }
-  const keypress = (e: KeyboardEvent) => {
+  const onKeyPress = (e: KeyboardEvent) => {
     if (!e.repeat && VALID_KEYS.includes(e.key)) {
       console.log(e.key)
     }
   }
 
-  onEvent('mousedown', mousedown)
-  onEvent('mouseup', mouseup)
-  onEvent('mousemove', mousemove)
-  onEvent('keypress', keypress)
+  onEvent('mousedown', onMouseDown)
+  onEvent('mouseup', onMouseUp)
+  onEvent('mousemove', onMouseMove)
+  onEvent('keypress', onKeyPress)
 
   return (
-    <>
-      <Caret />
-    </>
+    <div
+      class={styles.Typewriter}
+      style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
+    >
+      <Caret offset={offset()} />
+    </div>
   )
 }
