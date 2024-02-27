@@ -6,7 +6,7 @@ import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
 
 const VALID_KEYS = [
-  ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-*/÷%"\'#@&_(),.;:?!¿¡\\|{}<>[]`^~',
+  ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-*/÷%"\'#&_(),.;:?!¿¡\\',
 ]
 
 export const Typewriter = () => {
@@ -93,7 +93,14 @@ export const Typewriter = () => {
       class={styles.Typewriter}
       style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
     >
-      <div style={{ position: 'absolute', left: `${offset()[0]}px`, top: `${offset()[1]}px` }}>
+      <div
+        style={{
+          'text-wrap': 'nowrap',
+          position: 'absolute',
+          left: `${offset()[0]}px`,
+          top: `${offset()[1]}px`,
+        }}
+      >
         <Caret position={caretPosition()} />
 
         <For each={frames}>
