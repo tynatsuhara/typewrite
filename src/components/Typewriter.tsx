@@ -29,7 +29,7 @@ export const Typewriter = () => {
   const [isShiftDown, setShiftDown] = createSignal(false)
   const [isMouseDown, setMouseDown] = createSignal(false)
   const { clientWidth, clientHeight } = document.body
-  const [offset, setOffset] = createSignal<Vector2>([clientWidth / 2, clientHeight * 0.3])
+  const [offset, setOffset] = createSignal<Vector2>([clientWidth / 2, clientHeight * 0.45])
   const [caretPosition, setCaretPosition] = createSignal<Vector2>([0, 0])
 
   const onMouseDown = () => setMouseDown(true)
