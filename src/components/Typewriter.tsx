@@ -93,15 +93,16 @@ export const Typewriter = () => {
       class={styles.Typewriter}
       style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
     >
-      <div style={{ position: 'relative', left: `${offset()[0]}px`, top: `${offset()[1]}px` }}>
+      <div style={{ position: 'absolute', left: `${offset()[0]}px`, top: `${offset()[1]}px` }}>
+        <Caret position={caretPosition()} />
+
         <For each={frames}>
           {(frame) => (
-            <div style={{ position: 'relative', left: `${frame.x}px`, top: `${frame.y}px` }}>
+            <div style={{ position: 'absolute', left: `${frame.x}px`, top: `${frame.y}px` }}>
               {frame.text}
             </div>
           )}
         </For>
-        <Caret position={caretPosition()} />
       </div>
     </div>
   )

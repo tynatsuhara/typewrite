@@ -3,11 +3,11 @@ import { Vector2 } from '../types'
 
 export const Caret = (props: { position: Vector2 }) => {
   return (
-    <span
+    <div
       class={styles.Caret}
       style={{ left: `${props.position[0]}px`, top: `${props.position[1]}px` }}
     >
       _
-    </span>
+    </div>
   )
 }

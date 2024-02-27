@@ -33,7 +33,7 @@ body {
 
 .Caret {
   animation: blinker 1s step-start infinite;
-  position: relative;
+  position: absolute;
 }
 
 @keyframes blinker {
