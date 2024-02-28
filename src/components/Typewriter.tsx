@@ -23,7 +23,10 @@ export const Typewriter = () => {
   // we need a new frame on the initial render and anytime that the cursor moves
   const [newFrame, setNewFrame] = createSignal(true)
 
-  const moveCaret = (x: number, y: number, moveOffset = true) => {
+  const moveCaret = (x: number, y: number, newFrame: boolean, moveOffset = true) => {
+    if (newFrame) {
+      setNewFrame(true)
+    }
     setCaretPosition(([cx, cy]) => [cx + x, cy + y])
     if (moveOffset) {
       setOffset(([ox, oy]) => [ox - x, oy - y])
@@ -47,21 +50,25 @@ export const Typewriter = () => {
     // if the mouse is down, don't do any shifting/animation stuff
     if (!isMouseDown()) {
       const shift = document.getElementById(id)!.clientWidth - initialWidth
-      moveCaret(shift, 0)
+      moveCaret(shift, 0, false)
     }
   }
 
   const enter = () => {
     if (newFrame()) {
       // if we need a new frame, all we're really doing is moving the cursor down
-      moveCaret(0, LINE_HEIGHT)
+      moveCaret(0, LINE_HEIGHT, false)
     } else {
-      setNewFrame(true)
       const lastFrame = frames[frames.length - 1]
       const newX = lastFrame.x // go back to the beginning of the line
       const newY = caretPosition()[1] + LINE_HEIGHT
       const [cx, cy] = caretPosition()
-      moveCaret(newX - cx, newY - cy)
+
+      // first, move down
+      moveCaret(0, newY - cy, true)
+
+      // then, move left
+      setTimeout(() => moveCaret(newX - cx, 0, true), 250)
     }
   }
 
@@ -77,14 +84,13 @@ export const Typewriter = () => {
       // move the background
       const [x, y] = offset()
       setOffset([x + e.movementX, y + e.movementY])
+
       // move the cursor if they're not holding down shift
       // TODO: determine if there's a better way here — a toggle, probably?
       if (!keysDown()['Shift']) {
         const [cx, cy] = caretPosition()
-        setCaretPosition([cx - e.movementX, cy - e.movementY])
-        // @ts-ignore
-        // whenever the cursor moves, we need to create a new frame
         setNewFrame(true)
+        moveCaret(-e.movementX, -e.movementY, true, false)
       }
     }
     const onKeyDown = (e: KeyboardEvent) => {
