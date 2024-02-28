@@ -27,6 +27,13 @@ export const Typewriter = () => {
   // we need a new frame on the initial render and anytime that the cursor moves
   const [newFrame, setNewFrame] = createSignal(true)
 
+  const moveCaret = (x: number, y: number, moveOffset = true) => {
+    setCaretPosition(([cx, cy]) => [cx + x, cy + y])
+    if (moveOffset) {
+      setOffset(([ox, oy]) => [ox - x, oy - y])
+    }
+  }
+
   const type = (key: string) => {
     if (newFrame()) {
       setNewFrame(false)
@@ -45,24 +52,21 @@ export const Typewriter = () => {
     if (!isMouseDown()) {
       const shift = document.getElementById(id)!.clientWidth - initialWidth
       console.log(shift)
-      setOffset(([x, y]) => [x - shift, y])
-      setCaretPosition(([x, y]) => [x + shift, y])
+      moveCaret(shift, 0)
     }
   }
 
   const enter = () => {
     if (newFrame()) {
       // if we need a new frame, all we're really doing is moving the cursor down
-      setOffset(([x, y]) => [x, y - LINE_HEIGHT])
-      setCaretPosition(([x, y]) => [x, y + LINE_HEIGHT])
+      moveCaret(0, LINE_HEIGHT)
     } else {
       setNewFrame(true)
       const lastFrame = frames[frames.length - 1]
       const newX = lastFrame.x // go back to the beginning of the line
       const newY = caretPosition()[1] + LINE_HEIGHT
-      // TODO combine setOffset and setCaretPosition so we don't always have to call them together!
-      // setOffset(([x, y]) => [x, y - LINE_HEIGHT]) // TODO
-      setCaretPosition(([x, y]) => [newX, newY])
+      const [cx, cy] = caretPosition()
+      moveCaret(newX - cx, newY - cy)
     }
   }
 
@@ -74,6 +78,7 @@ export const Typewriter = () => {
       if (!isMouseDown()) {
         return
       }
+
       // move the background
       const [x, y] = offset()
       setOffset([x + e.movementX, y + e.movementY])
