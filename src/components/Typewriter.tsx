@@ -8,18 +8,14 @@ import { Caret } from './Caret'
 const VALID_KEYS = [
   ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-=*/÷%"\'#&_(),.;:?!¿¡\\',
 ]
+const MODIFIER_KEYS = ['Control', 'Alt', 'Meta']
 const LINE_HEIGHT = 26 // pixels
 
 export const Typewriter = () => {
   // each "frame" represents a div of text
-  const [frames, setFrames] = createStore<Array<Frame>>([
-    {
-      text: 'Example!',
-      x: 50,
-      y: 100,
-    },
-  ])
-  const [isShiftDown, setShiftDown] = createSignal(false)
+  const [frames, setFrames] = createStore<Array<Frame>>([])
+  // used for tracking modifier keys
+  const [keysDown, setKeysDown] = createSignal<Record<string, boolean>>({})
   const [isMouseDown, setMouseDown] = createSignal(false)
   const { clientWidth, clientHeight } = document.body
   const [offset, setOffset] = createSignal<Vector2>([clientWidth / 2, clientHeight * 0.45])
@@ -51,7 +47,6 @@ export const Typewriter = () => {
     // if the mouse is down, don't do any shifting/animation stuff
     if (!isMouseDown()) {
       const shift = document.getElementById(id)!.clientWidth - initialWidth
-      console.log(shift)
       moveCaret(shift, 0)
     }
   }
@@ -84,7 +79,7 @@ export const Typewriter = () => {
       setOffset([x + e.movementX, y + e.movementY])
       // move the cursor if they're not holding down shift
       // TODO: determine if there's a better way here — a toggle, probably?
-      if (!isShiftDown()) {
+      if (!keysDown()['Shift']) {
         const [cx, cy] = caretPosition()
         setCaretPosition([cx - e.movementX, cy - e.movementY])
         // @ts-ignore
@@ -95,18 +90,17 @@ export const Typewriter = () => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) {
         return
-      } else if (VALID_KEYS.includes(e.key)) {
+      } else if (VALID_KEYS.includes(e.key) && MODIFIER_KEYS.every((k) => !keysDown()[k])) {
         type(e.key)
-        console.log(e.key)
       } else if (e.key === 'Enter') {
         enter()
-      } else if (e.key === 'Shift') {
-        setShiftDown(true)
+      } else if (e.key === 'Shift' || MODIFIER_KEYS.includes(e.key)) {
+        setKeysDown({ ...keysDown(), [e.key]: true })
       }
     }
     const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'Shift') {
-        setShiftDown(false)
+      if (e.key === 'Shift' || MODIFIER_KEYS.includes(e.key)) {
+        setKeysDown({ ...keysDown(), [e.key]: false })
       }
     }
 
