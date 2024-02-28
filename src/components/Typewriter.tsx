@@ -6,8 +6,9 @@ import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
 
 const VALID_KEYS = [
-  ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-*/÷%"\'#&_(),.;:?!¿¡\\',
+  ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-=*/÷%"\'#&_(),.;:?!¿¡\\',
 ]
+const LINE_HEIGHT = 26 // pixels
 
 export const Typewriter = () => {
   // each "frame" represents a div of text
@@ -49,6 +50,22 @@ export const Typewriter = () => {
     }
   }
 
+  const enter = () => {
+    if (newFrame()) {
+      // if we need a new frame, all we're really doing is moving the cursor down
+      setOffset(([x, y]) => [x, y - LINE_HEIGHT])
+      setCaretPosition(([x, y]) => [x, y + LINE_HEIGHT])
+    } else {
+      setNewFrame(true)
+      const lastFrame = frames[frames.length - 1]
+      const newX = lastFrame.x // go back to the beginning of the line
+      const newY = caretPosition()[1] + LINE_HEIGHT
+      // TODO combine setOffset and setCaretPosition so we don't always have to call them together!
+      // setOffset(([x, y]) => [x, y - LINE_HEIGHT]) // TODO
+      setCaretPosition(([x, y]) => [newX, newY])
+    }
+  }
+
   // Event handlers
   {
     const onMouseDown = () => setMouseDown(true)
@@ -77,9 +94,7 @@ export const Typewriter = () => {
         type(e.key)
         console.log(e.key)
       } else if (e.key === 'Enter') {
-        console.log('enter')
-      } else if (e.key === 'Backspace') {
-        console.log('backspace')
+        enter()
       } else if (e.key === 'Shift') {
         setShiftDown(true)
       }
@@ -99,11 +114,11 @@ export const Typewriter = () => {
 
   return (
     <div
-      class={styles.Typewriter}
+      class={`${styles.Typewriter} ${isMouseDown() ? styles.MouseDown : ''}`}
       style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
     >
       <div
-        class={`${styles.TextContainer} ${isMouseDown() ? styles.MouseDown : ''}`}
+        class={styles.TextContainer}
         style={{ left: `${offset()[0]}px`, top: `${offset()[1]}px` }}
       >
         <Caret position={caretPosition()} />
