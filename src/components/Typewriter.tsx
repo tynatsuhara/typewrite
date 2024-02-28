@@ -8,13 +8,12 @@ import { Caret } from './Caret'
 const VALID_KEYS = [
   ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-=*/÷%"\'#&_(),.;:?!¿¡\\',
 ]
-const MODIFIER_KEYS = ['Control', 'Alt', 'Meta']
 const LINE_HEIGHT = 26 // pixels
 
 export const Typewriter = () => {
   // each "frame" represents a div of text
   const [frames, setFrames] = createStore<Array<Frame>>([])
-  // used for tracking modifier keys
+  // used for tracking held-down keys (currently only shift)
   const [keysDown, setKeysDown] = createSignal<Record<string, boolean>>({})
   const [isMouseDown, setMouseDown] = createSignal(false)
   const { clientWidth, clientHeight } = document.body
@@ -94,18 +93,18 @@ export const Typewriter = () => {
       }
     }
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.repeat) {
+      if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
         return
-      } else if (VALID_KEYS.includes(e.key) && MODIFIER_KEYS.every((k) => !keysDown()[k])) {
+      } else if (VALID_KEYS.includes(e.key)) {
         type(e.key)
       } else if (e.key === 'Enter') {
         enter()
-      } else if (e.key === 'Shift' || MODIFIER_KEYS.includes(e.key)) {
+      } else if (e.key === 'Shift') {
         setKeysDown({ ...keysDown(), [e.key]: true })
       }
     }
     const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'Shift' || MODIFIER_KEYS.includes(e.key)) {
+      if (e.key === 'Shift') {
         setKeysDown({ ...keysDown(), [e.key]: false })
       }
     }
