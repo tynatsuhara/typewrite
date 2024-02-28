@@ -2,6 +2,7 @@ import { For, createSignal } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import styles from '../App.module.css'
 import { Frame, Vector2 } from '../types'
+import { Sounds } from '../utils/Sounds'
 import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
 
@@ -51,6 +52,11 @@ export const Typewriter = () => {
       const shift = document.getElementById(id)!.clientWidth - initialWidth
       moveCaret(shift, 0, false)
     }
+
+    if (key === ' ') {
+    } else {
+      Sounds.playTypeSound()
+    }
   }
 
   const enter = () => {
@@ -58,6 +64,8 @@ export const Typewriter = () => {
       // if we need a new frame, all we're really doing is moving the cursor down
       moveCaret(0, LINE_HEIGHT, false)
     } else {
+      // Sounds.playTypeSound()
+
       const lastFrame = frames[frames.length - 1]
       const newX = lastFrame.x // go back to the beginning of the line
       const newY = caretPosition()[1] + LINE_HEIGHT
@@ -67,7 +75,10 @@ export const Typewriter = () => {
       moveCaret(0, newY - cy, true)
 
       // then, move left
-      setTimeout(() => moveCaret(newX - cx, 0, true), 250)
+      setTimeout(() => {
+        moveCaret(newX - cx, 0, true)
+        Sounds.playNewLineSound()
+      }, 250)
     }
   }
 

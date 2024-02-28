@@ -25,15 +25,11 @@ It correctly bundles Solid in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
-## Deployment
+## Roadmap
 
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+- serialization/saving/printing
+- toolbar?
 
 ## Credits
 
-Built using Solid.js. Typewriter font is [Cella](https://www.dafont.com/cella.font).
-
-Some other fonts which might be used in the future:
-https://www.dafont.com/underwood-champion.font
-https://www.dafont.com/another-typewriter.font
-https://www.dafont.com/afl-font-pespaye-no.font
+Built using Solid.js. Typewriter font is [Cella](https://www.dafont.com/cella.font). Sounds from [Uppbeat](https://uppbeat.io/).

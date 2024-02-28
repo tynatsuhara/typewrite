@@ -18,5 +18,5 @@ export default defineConfig({
     target: 'esnext',
   },
   // the project is deployed at ty.pizza/typewrite, so we need to configure the base path
-  base: process.env.NODE_ENV === 'production' ? 'typewrite' : '/',
+  base: process.env.NODE_ENV === 'production' ? 'typewrite/' : '/',
 })
