@@ -53,8 +53,7 @@ export const Typewriter = () => {
       moveCaret(shift, 0, false)
     }
 
-    if (key === ' ') {
-    } else {
+    if (key !== ' ') {
       Sounds.playTypeSound()
     }
   }
@@ -62,10 +61,10 @@ export const Typewriter = () => {
   const enter = () => {
     if (newFrame()) {
       // if we need a new frame, all we're really doing is moving the cursor down
-      moveCaret(0, LINE_HEIGHT, false)
+      if (!isMouseDown()) {
+        moveCaret(0, LINE_HEIGHT, false)
+      }
     } else {
-      // Sounds.playTypeSound()
-
       const lastFrame = frames[frames.length - 1]
       const newX = lastFrame.x // go back to the beginning of the line
       const newY = caretPosition()[1] + LINE_HEIGHT
