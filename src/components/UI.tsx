@@ -8,13 +8,13 @@ import SaveAs from '@suid/icons-material/SaveAs'
 import { Box, ButtonGroup, ThemeProvider, createTheme } from '@suid/material'
 import { createSignal } from 'solid-js'
 import { Doc } from '../core/Doc'
+import { Vector2 } from '../types'
 import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
 import { onEvent } from '../utils/onEvent'
 import { ToolbarButton } from './ToolbarButton'
 
-// TODO
-const TOOLBAR_HOVER_AREA = 150
+const TOOLBAR_HOVER_MARGIN: Vector2 = [150, 400]
 const TOOLBAR_OFFSCREEN_POS = '-230px'
 
 const theme = createTheme({
@@ -33,11 +33,23 @@ export const UI = () => {
   const [isFullscreen, setFullscreen] = createFullscreenSignal()
   const [isHoveringToolbarArea, setIsHoveringToolbarArea] = createSignal(false)
 
+  const saveFn = () => {
+    // TODO save as, prompt for name
+    FilingCabinet.put()
+  }
+
   onEvent('mousemove', (e) => {
     setIsHoveringToolbarArea(
-      e.clientY > document.body.clientHeight - TOOLBAR_HOVER_AREA &&
-        e.clientX < document.body.clientWidth / 4
+      e.clientY > document.body.clientHeight - TOOLBAR_HOVER_MARGIN[0] &&
+        e.clientX < TOOLBAR_HOVER_MARGIN[1]
     )
+  })
+
+  onEvent('keydown', (e) => {
+    if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault()
+      saveFn()
+    }
   })
 
   return (
@@ -52,7 +64,7 @@ export const UI = () => {
           transition: 'left .3s ease',
         }}
       >
-        <ToolbarButton onClick={() => FilingCabinet.put()}>
+        <ToolbarButton onClick={saveFn}>
           <Save />
           {Doc.hasUnsavedChanges() && (
             <Box
