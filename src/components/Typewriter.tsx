@@ -52,6 +52,7 @@ export const Typewriter = () => {
     }
 
     if (key !== ' ') {
+      Doc.setHasUnsavedChanges(true)
       Sounds.playTypeSound()
     }
   }

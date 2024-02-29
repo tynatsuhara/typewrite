@@ -9,7 +9,7 @@ const [name, setName] = createSignal<string | null>('TODOname')
 const [frames, setFrames] = createStore<Array<Frame>>([])
 const [hasUnsavedChanges, setHasUnsavedChanges] = createSignal(false)
 
-// TODO?
+// TODO
 // const [caretPosition, setCaretPosition] = createSignal<Vector2>([0, 0])
 
 /**

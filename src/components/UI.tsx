@@ -4,12 +4,12 @@ import FullscreenExit from '@suid/icons-material/FullscreenExit'
 import Print from '@suid/icons-material/Print'
 import Save from '@suid/icons-material/Save'
 import SaveAs from '@suid/icons-material/SaveAs'
-import Settings from '@suid/icons-material/Settings'
-import { Box, Button, ButtonGroup, ThemeProvider, createTheme } from '@suid/material'
-import { ButtonProps } from '@suid/material/Button'
+// import Settings from '@suid/icons-material/Settings'
+import { Box, ButtonGroup, ThemeProvider, createTheme } from '@suid/material'
 import { Doc } from '../core/Doc'
 import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
+import { ToolbarButton } from './ToolbarButton'
 
 const theme = createTheme({
   palette: {
@@ -26,9 +26,6 @@ const theme = createTheme({
 export const UI = () => {
   const [isFullscreen, setFullscreen] = createFullscreenSignal()
 
-  const blur = () => (document.activeElement as HTMLElement).blur()
-
-  const buttonProps: ButtonProps = { sx: { padding: '8px 12px' } }
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -48,7 +45,7 @@ export const UI = () => {
             bottom: '1rem',
           }}
         >
-          <Button {...buttonProps} onClick={() => FilingCabinet.put()}>
+          <ToolbarButton onClick={() => FilingCabinet.put()}>
             <Save />
             {Doc.hasUnsavedChanges() && (
               <Box
@@ -61,33 +58,32 @@ export const UI = () => {
                 *
               </Box>
             )}
-          </Button>
+          </ToolbarButton>
 
-          <Button {...buttonProps}>
+          <ToolbarButton>
             <SaveAs />
-          </Button>
+          </ToolbarButton>
 
-          <Button {...buttonProps} onClick={() => FilingCabinet.get('TODOname')}>
+          <ToolbarButton onClick={() => FilingCabinet.get('TODOname')}>
             <FileOpen />
-          </Button>
+          </ToolbarButton>
 
-          <Button {...buttonProps}>
+          <ToolbarButton>
             <Print />
-          </Button>
+          </ToolbarButton>
 
-          <Button
-            {...buttonProps}
+          <ToolbarButton
             onClick={() => {
               setFullscreen(!isFullscreen())
               blur()
             }}
           >
             {isFullscreen() ? <FullscreenExit /> : <Fullscreen />}
-          </Button>
+          </ToolbarButton>
 
-          <Button {...buttonProps}>
+          {/* <ToolbarButton>
             <Settings />
-          </Button>
+          </ToolbarButton> */}
         </ButtonGroup>
       </Box>
     </ThemeProvider>
