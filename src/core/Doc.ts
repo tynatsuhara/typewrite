@@ -14,6 +14,8 @@ const [name, setName] = createSignal<string | null>('TODOname')
 const [frames, setFrames] = createStore<Array<Frame>>([])
 const [hasUnsavedChanges, setHasUnsavedChanges] = createSignal(false)
 const [caretPosition, setCaretPosition] = createSignal<Vector2>([0, 0])
+// we need a new frame on the initial render and anytime that the cursor moves
+const [newFrame, setNewFrame] = createSignal(true)
 const [offset, setOffset] = createSignal<Vector2>(getCenterOffset())
 
 const recenter = () => {
@@ -34,6 +36,8 @@ export const Doc = Object.freeze({
   setHasUnsavedChanges,
   caretPosition,
   setCaretPosition,
+  newFrame,
+  setNewFrame,
   offset,
   setOffset,
   recenter,

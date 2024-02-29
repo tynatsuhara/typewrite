@@ -14,12 +14,10 @@ export const Typewriter = () => {
   // used for tracking held-down keys (currently only shift)
   const [keysDown, setKeysDown] = createSignal<Record<string, boolean>>({})
   const [isMouseDown, setMouseDown] = createSignal(false)
-  // we need a new frame on the initial render and anytime that the cursor moves
-  const [newFrame, setNewFrame] = createSignal(true)
 
   const moveCaret = (x: number, y: number, newFrame: boolean, moveOffset = true) => {
     if (newFrame) {
-      setNewFrame(true)
+      Doc.setNewFrame(true)
     }
     Doc.setCaretPosition(([cx, cy]) => [cx + x, cy + y])
     if (moveOffset) {
@@ -28,8 +26,8 @@ export const Typewriter = () => {
   }
 
   const type = (key: string) => {
-    if (newFrame()) {
-      setNewFrame(false)
+    if (Doc.newFrame()) {
+      Doc.setNewFrame(false)
       const [x, y] = Doc.caretPosition()
       Doc.setFrames([...Doc.frames, { text: '', x, y }])
     }
@@ -54,7 +52,7 @@ export const Typewriter = () => {
   }
 
   const enter = () => {
-    if (newFrame()) {
+    if (Doc.newFrame()) {
       // if we need a new frame, all we're really doing is moving the cursor down
       if (!isMouseDown()) {
         moveCaret(0, LINE_HEIGHT, false)
@@ -93,7 +91,7 @@ export const Typewriter = () => {
       // TODO: determine if there's a better way here — a toggle, probably?
       if (!keysDown()['Shift']) {
         const [cx, cy] = Doc.caretPosition()
-        setNewFrame(true)
+        Doc.setNewFrame(true)
         moveCaret(-e.movementX, -e.movementY, true, false)
       }
     }
