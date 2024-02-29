@@ -1,7 +1,6 @@
 import { For, createSignal } from 'solid-js'
 import styles from '../App.module.css'
 import { Doc } from '../core/Doc'
-import { Vector2 } from '../types'
 import { Sounds } from '../utils/Sounds'
 import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
@@ -15,9 +14,6 @@ export const Typewriter = () => {
   // used for tracking held-down keys (currently only shift)
   const [keysDown, setKeysDown] = createSignal<Record<string, boolean>>({})
   const [isMouseDown, setMouseDown] = createSignal(false)
-  const { clientWidth, clientHeight } = document.body
-  const [offset, setOffset] = createSignal<Vector2>([clientWidth / 2, clientHeight * 0.45])
-  const [caretPosition, setCaretPosition] = createSignal<Vector2>([0, 0])
   // we need a new frame on the initial render and anytime that the cursor moves
   const [newFrame, setNewFrame] = createSignal(true)
 
@@ -25,16 +21,16 @@ export const Typewriter = () => {
     if (newFrame) {
       setNewFrame(true)
     }
-    setCaretPosition(([cx, cy]) => [cx + x, cy + y])
+    Doc.setCaretPosition(([cx, cy]) => [cx + x, cy + y])
     if (moveOffset) {
-      setOffset(([ox, oy]) => [ox - x, oy - y])
+      Doc.setOffset(([ox, oy]) => [ox - x, oy - y])
     }
   }
 
   const type = (key: string) => {
     if (newFrame()) {
       setNewFrame(false)
-      const [x, y] = caretPosition()
+      const [x, y] = Doc.caretPosition()
       Doc.setFrames([...Doc.frames, { text: '', x, y }])
     }
 
@@ -66,8 +62,8 @@ export const Typewriter = () => {
     } else {
       const lastFrame = Doc.frames[Doc.frames.length - 1]
       const newX = lastFrame.x // go back to the beginning of the line
-      const newY = caretPosition()[1] + LINE_HEIGHT
-      const [cx, cy] = caretPosition()
+      const newY = Doc.caretPosition()[1] + LINE_HEIGHT
+      const [cx, cy] = Doc.caretPosition()
 
       // first, move down
       moveCaret(0, newY - cy, true)
@@ -90,13 +86,13 @@ export const Typewriter = () => {
       }
 
       // move the background
-      const [x, y] = offset()
-      setOffset([x + e.movementX, y + e.movementY])
+      const [x, y] = Doc.offset()
+      Doc.setOffset([x + e.movementX, y + e.movementY])
 
       // move the cursor if they're not holding down shift
       // TODO: determine if there's a better way here — a toggle, probably?
       if (!keysDown()['Shift']) {
-        const [cx, cy] = caretPosition()
+        const [cx, cy] = Doc.caretPosition()
         setNewFrame(true)
         moveCaret(-e.movementX, -e.movementY, true, false)
       }
@@ -128,13 +124,13 @@ export const Typewriter = () => {
   return (
     <div
       class={`${styles.Typewriter} ${isMouseDown() ? styles.MouseDown : ''}`}
-      style={{ 'background-position': `${offset()[0]}px ${offset()[1]}px` }}
+      style={{ 'background-position': `${Doc.offset()[0]}px ${Doc.offset()[1]}px` }}
     >
       <div
         class={styles.TextContainer}
-        style={{ left: `${offset()[0]}px`, top: `${offset()[1]}px` }}
+        style={{ left: `${Doc.offset()[0]}px`, top: `${Doc.offset()[1]}px` }}
       >
-        <Caret position={caretPosition()} />
+        <Caret position={Doc.caretPosition()} />
 
         <For each={Doc.frames}>
           {(frame, index) => (
