@@ -7,6 +7,8 @@ import SaveAs from '@suid/icons-material/SaveAs'
 import Settings from '@suid/icons-material/Settings'
 import { Box, Button, ButtonGroup, ThemeProvider, createTheme } from '@suid/material'
 import { ButtonProps } from '@suid/material/Button'
+import { Doc } from '../core/Doc'
+import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
 
 const theme = createTheme({
@@ -46,15 +48,26 @@ export const UI = () => {
             bottom: '1rem',
           }}
         >
-          <Button {...buttonProps}>
+          <Button {...buttonProps} onClick={() => FilingCabinet.put()}>
             <Save />
+            {Doc.hasUnsavedChanges() && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '1px',
+                  right: '10px',
+                }}
+              >
+                *
+              </Box>
+            )}
           </Button>
 
           <Button {...buttonProps}>
             <SaveAs />
           </Button>
 
-          <Button {...buttonProps}>
+          <Button {...buttonProps} onClick={() => FilingCabinet.get('TODOname')}>
             <FileOpen />
           </Button>
 
