@@ -1,7 +1,7 @@
 import { For, createSignal } from 'solid-js'
-import { createStore } from 'solid-js/store'
 import styles from '../App.module.css'
-import { Frame, Vector2 } from '../types'
+import { Doc } from '../core/Doc'
+import { Vector2 } from '../types'
 import { Sounds } from '../utils/Sounds'
 import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
@@ -12,8 +12,6 @@ const VALID_KEYS = [
 const LINE_HEIGHT = 26 // pixels
 
 export const Typewriter = () => {
-  // each "frame" represents a div of text
-  const [frames, setFrames] = createStore<Array<Frame>>([])
   // used for tracking held-down keys (currently only shift)
   const [keysDown, setKeysDown] = createSignal<Record<string, boolean>>({})
   const [isMouseDown, setMouseDown] = createSignal(false)
@@ -37,13 +35,13 @@ export const Typewriter = () => {
     if (newFrame()) {
       setNewFrame(false)
       const [x, y] = caretPosition()
-      setFrames([...frames, { text: '', x, y }])
+      Doc.setFrames([...Doc.frames, { text: '', x, y }])
     }
 
-    const id = `frame-${frames.length - 1}`
+    const id = `frame-${Doc.frames.length - 1}`
     const initialWidth = document.getElementById(id)!.clientWidth ?? 0
-    setFrames(
-      (f, i) => i === frames.length - 1,
+    Doc.setFrames(
+      (f, i) => i === Doc.frames.length - 1,
       'text',
       (text) => text + key
     )
@@ -65,7 +63,7 @@ export const Typewriter = () => {
         moveCaret(0, LINE_HEIGHT, false)
       }
     } else {
-      const lastFrame = frames[frames.length - 1]
+      const lastFrame = Doc.frames[Doc.frames.length - 1]
       const newX = lastFrame.x // go back to the beginning of the line
       const newY = caretPosition()[1] + LINE_HEIGHT
       const [cx, cy] = caretPosition()
@@ -137,7 +135,7 @@ export const Typewriter = () => {
       >
         <Caret position={caretPosition()} />
 
-        <For each={frames}>
+        <For each={Doc.frames}>
           {(frame, index) => (
             <div
               class={styles.MovableType}

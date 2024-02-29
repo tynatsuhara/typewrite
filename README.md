@@ -1,6 +1,7 @@
 # typewrite
 
-typewriter art for the digital world.
+I originally wrote this for the purpose of creating digital typewriter art.
+It functions as a typewriter with infinitely-big paper. Neat!
 
 ## Usage
 
