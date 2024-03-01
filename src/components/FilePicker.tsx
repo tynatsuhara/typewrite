@@ -24,6 +24,67 @@ export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean)
 
   const theme = useTheme()
 
+  const content = () => {
+    if (files().length === 0) {
+      return (
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="body1" color={theme.palette.text.primary}>
+            No saved files
+          </Typography>
+        </Box>
+      )
+    }
+
+    return (
+      <For each={files()}>
+        {(item, index) => {
+          return (
+            <Box sx={{ height: '50px' }}>
+              <Divider sx={{ margin: '0px 0', opacity: index() === 0 ? 0 : 1 }} />
+              <Box sx={{ margin: '4px 0' }}>
+                <Box>
+                  <Typography
+                    variant="body1"
+                    color={theme.palette.text.primary}
+                    sx={{ float: 'left', display: 'inline-block', marginTop: '8px' }}
+                  >
+                    {item}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    float: 'right',
+                  }}
+                >
+                  <IconButton
+                    onClick={async () => {
+                      FilingCabinet.get(item)
+                      props.setOpen(false)
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => {
+                      FilingCabinet.remove(item)
+                      setFiles([...files()].filter((f) => f !== item))
+                      if (Doc.name() === item) {
+                        Doc.setHasUnsavedChanges(true)
+                        Doc.setName(null)
+                      }
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            </Box>
+          )
+        }}
+      </For>
+    )
+  }
+
   return (
     <UiBox {...props} id="file-picker">
       <Box
@@ -33,52 +94,7 @@ export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean)
           overflow: 'scroll',
         }}
       >
-        <For each={files()}>
-          {(item, index) => {
-            return (
-              <Box sx={{ height: '50px' }}>
-                <Divider sx={{ margin: '0px 0', opacity: index() === 0 ? 0 : 1 }} />
-                <Box sx={{ margin: '4px 0' }}>
-                  <Box>
-                    <Typography
-                      variant="body1"
-                      color={theme.palette.text.primary}
-                      sx={{ float: 'left', display: 'inline-block', marginTop: '8px' }}
-                    >
-                      {item}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      float: 'right',
-                    }}
-                  >
-                    <IconButton
-                      onClick={async () => {
-                        FilingCabinet.get(item)
-                        props.setOpen(false)
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        FilingCabinet.remove(item)
-                        setFiles([...files()].filter((f) => f !== item))
-                        if (Doc.name() === item) {
-                          Doc.setHasUnsavedChanges(true)
-                          Doc.setName(null)
-                        }
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </Box>
-            )
-          }}
-        </For>
+        {content()}
       </Box>
     </UiBox>
   )
