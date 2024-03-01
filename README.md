@@ -1,6 +1,8 @@
 # typewrite
 
-a digital typewriter with infinitely-big paper. extremely useful!
+I loved [Keira Rathbone's typewriter art](https://www.keirarathbone.com/portfolio) when I saw it at the National Museum of Scotland.
+Inspired by that, I built this — a digital typewriter with infinitely-big paper.
+Of course, making art is optional — it's really just a gimmicky and inconvenient notepad!
 
 ## Usage
 
