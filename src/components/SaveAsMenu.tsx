@@ -6,10 +6,13 @@ import { UiBox } from '../utils/UiBox'
 
 export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean) => void }) => {
   const [name, setName] = createSignal('')
-  createEffect(() => {
-    setName(Doc.name() ?? '')
-  })
   const [error, setError] = createSignal('')
+  createEffect(() => {
+    if (props.isOpen()) {
+      setName(Doc.name() ?? '')
+      setError('')
+    }
+  })
   const save = async () => {
     const newName = name()?.trim() ?? ''
     if (!newName.length) {
@@ -36,7 +39,7 @@ export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean)
       >
         <TextField
           label="Document name"
-          variant="filled"
+          variant="outlined"
           fullWidth
           value={name()}
           helperText={error()}
