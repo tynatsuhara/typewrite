@@ -1,9 +1,10 @@
-import Folder from '@suid/icons-material/Folder'
-import Fullscreen from '@suid/icons-material/Fullscreen'
-import FullscreenExit from '@suid/icons-material/FullscreenExit'
-import Print from '@suid/icons-material/Print'
-import Save from '@suid/icons-material/Save'
-import SaveAs from '@suid/icons-material/SaveAs'
+import FolderIcon from '@suid/icons-material/Folder'
+import FullscreenIcon from '@suid/icons-material/Fullscreen'
+import FullscreenExitIcon from '@suid/icons-material/FullscreenExit'
+import HelpIcon from '@suid/icons-material/Help'
+import PrintIcon from '@suid/icons-material/Print'
+import SaveIcon from '@suid/icons-material/Save'
+import SaveAsIcon from '@suid/icons-material/SaveAs'
 // import Settings from '@suid/icons-material/Settings'
 import { Box, ButtonGroup, ThemeProvider, createTheme } from '@suid/material'
 import { createSignal } from 'solid-js'
@@ -13,12 +14,13 @@ import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
 import { onEvent } from '../utils/onEvent'
 import { FilePicker } from './FilePicker'
+import { HelpMenu } from './HelpMenu'
 import { printDoc } from './PrintView'
 import { SaveAsMenu } from './SaveAsMenu'
 import { ToolbarButton } from './ToolbarButton'
 
 const TOOLBAR_HOVER_MARGIN: Vector2 = [150, 400]
-const TOOLBAR_OFFSCREEN_POS = '-230px'
+const TOOLBAR_OFFSCREEN_POS = '-280px'
 
 const theme = createTheme({
   palette: {
@@ -43,6 +45,7 @@ export const UI = () => {
   const [isHoveringToolbarArea, setIsHoveringToolbarArea] = createSignal(false)
   const [isSaveAsMenuOpen, setSaveAsMenuOpen] = createSignal(false)
   const [isFilePickerMenuOpen, setFilePickerMenuOpen] = createSignal(false)
+  const [isHelpMenuOpen, setHelpMenuOpen] = createSignal(false)
 
   const saveAsFn = () => {
     setSaveAsMenuOpen(true)
@@ -79,6 +82,7 @@ export const UI = () => {
     <ThemeProvider theme={theme}>
       <FilePicker isOpen={isFilePickerMenuOpen} setOpen={setFilePickerMenuOpen} />
       <SaveAsMenu isOpen={isSaveAsMenuOpen} setOpen={setSaveAsMenuOpen} />
+      <HelpMenu isOpen={isHelpMenuOpen} setOpen={setHelpMenuOpen} />
 
       <ThemeProvider theme={toolbarTheme}>
         <ButtonGroup
@@ -92,7 +96,7 @@ export const UI = () => {
           }}
         >
           <ToolbarButton onClick={saveFn}>
-            <Save />
+            <SaveIcon />
             {Doc.hasUnsavedChanges() && (
               <Box
                 sx={{
@@ -107,24 +111,24 @@ export const UI = () => {
           </ToolbarButton>
 
           <ToolbarButton onClick={saveAsFn}>
-            <SaveAs />
+            <SaveAsIcon />
           </ToolbarButton>
 
           <ToolbarButton onClick={() => setFilePickerMenuOpen(true)}>
-            <Folder />
+            <FolderIcon />
           </ToolbarButton>
 
           <ToolbarButton onClick={printDoc}>
-            <Print />
+            <PrintIcon />
           </ToolbarButton>
 
           <ToolbarButton onClick={() => setFullscreen(!isFullscreen())}>
-            {isFullscreen() ? <FullscreenExit /> : <Fullscreen />}
+            {isFullscreen() ? <FullscreenExitIcon /> : <FullscreenIcon />}
           </ToolbarButton>
 
-          {/* <ToolbarButton>
-            <Settings />
-          </ToolbarButton> */}
+          <ToolbarButton onClick={() => setHelpMenuOpen(true)}>
+            <HelpIcon />
+          </ToolbarButton>
         </ButtonGroup>
       </ThemeProvider>
     </ThemeProvider>
