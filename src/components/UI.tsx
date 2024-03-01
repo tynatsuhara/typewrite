@@ -69,6 +69,7 @@ export const UI = () => {
         e.preventDefault()
         saveFn()
       } else if (e.key === 'p') {
+        e.preventDefault()
         printDoc()
       }
     }
