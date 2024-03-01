@@ -3,7 +3,6 @@ import { createEffect, createSignal } from 'solid-js'
 import { JSX } from 'solid-js/jsx-runtime'
 import { onEvent } from './onEvent'
 
-// TODO this doesnt seem to be working
 const [globalOpen, setGlobalOpen] = createSignal<string | null>(null)
 export const isAnyMenuOpen = globalOpen
 

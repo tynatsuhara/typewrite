@@ -27,7 +27,7 @@ export const FilingCabinet = Object.freeze({
     const data = (await localforage.getItem(name)) as SaveFormat
     Doc.setName(name)
     Doc.setFrames(data.frames)
-    Doc.setCaretPosition(data.caret) // TODO reset offset to make caret centered
+    Doc.setCaretPosition(data.caret)
     Doc.setNewFrame(data.newFrame)
     Doc.recenter()
     console.log(`loaded document ${Doc.name()} data: ${data}`)

@@ -2,8 +2,6 @@ import { createSignal } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Frame, Vector2 } from '../types'
 
-// TODO encapsulate everything nicely?
-
 const getCenterOffset = (): Vector2 => {
   const { clientWidth, clientHeight } = document.body
   return [clientWidth / 2, clientHeight * 0.45]

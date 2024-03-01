@@ -33,7 +33,6 @@ const theme = createTheme({
   },
 })
 
-// TODO: make sure you can't open other menus when one's already open. maybe it'll close so that's already fine?
 export const UI = () => {
   const [isFullscreen, setFullscreen] = createFullscreenSignal()
   const [isHoveringToolbarArea, setIsHoveringToolbarArea] = createSignal(false)
@@ -48,7 +47,6 @@ export const UI = () => {
     if (!Doc.name()) {
       saveAsFn()
     } else {
-      // TODO save as, prompt for name
       FilingCabinet.put()
     }
   }
