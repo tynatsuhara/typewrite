@@ -13,7 +13,7 @@ export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean)
   const save = async () => {
     const newName = name()?.trim() ?? ''
     if (!newName.length) {
-      setError('Name may not be empty')
+      setError('Name cannot be empty')
       return
     }
     const existing = await FilingCabinet.index()
@@ -35,9 +35,8 @@ export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean)
         }}
       >
         <TextField
-          id="outlined-basic"
           label="Document name"
-          variant="outlined"
+          variant="filled"
           fullWidth
           value={name()}
           helperText={error()}

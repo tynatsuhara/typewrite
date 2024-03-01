@@ -42,7 +42,7 @@ export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean)
                     <Typography
                       variant="body1"
                       color={theme.palette.text.primary}
-                      sx={{ float: 'left', display: 'inline-block', marginTop: '10px' }}
+                      sx={{ float: 'left', display: 'inline-block', marginTop: '8px' }}
                     >
                       {item}
                     </Typography>

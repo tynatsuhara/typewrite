@@ -22,14 +22,18 @@ const TOOLBAR_OFFSCREEN_POS = '-230px'
 const theme = createTheme({
   palette: {
     mode: 'dark',
-    // TODO fix colors
-    // background: {
-    //   paper: '#444444',
-    // },
-    // primary: {
-    //   contrastText: '#e6e4e1',
-    //   main: '#444444',
-    // },
+    background: {
+      paper: '#303030',
+    },
+  },
+})
+
+const toolbarTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#303030',
+    },
   },
 })
 
@@ -70,51 +74,53 @@ export const UI = () => {
       <FilePicker isOpen={isFilePickerMenuOpen} setOpen={setFilePickerMenuOpen} />
       <SaveAsMenu isOpen={isSaveAsMenuOpen} setOpen={setSaveAsMenuOpen} />
 
-      <ButtonGroup
-        color="primary"
-        variant="contained"
-        sx={{
-          position: 'absolute',
-          left: isHoveringToolbarArea() ? '1rem' : TOOLBAR_OFFSCREEN_POS,
-          bottom: '1rem',
-          transition: 'left .3s ease',
-        }}
-      >
-        <ToolbarButton onClick={saveFn}>
-          <Save />
-          {Doc.hasUnsavedChanges() && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '1px',
-                right: '10px',
-              }}
-            >
-              *
-            </Box>
-          )}
-        </ToolbarButton>
+      <ThemeProvider theme={toolbarTheme}>
+        <ButtonGroup
+          color="primary"
+          variant="contained"
+          sx={{
+            position: 'absolute',
+            left: isHoveringToolbarArea() ? '1rem' : TOOLBAR_OFFSCREEN_POS,
+            bottom: '1rem',
+            transition: 'left .3s ease',
+          }}
+        >
+          <ToolbarButton onClick={saveFn}>
+            <Save />
+            {Doc.hasUnsavedChanges() && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '1px',
+                  right: '10px',
+                }}
+              >
+                *
+              </Box>
+            )}
+          </ToolbarButton>
 
-        <ToolbarButton onClick={saveAsFn}>
-          <SaveAs />
-        </ToolbarButton>
+          <ToolbarButton onClick={saveAsFn}>
+            <SaveAs />
+          </ToolbarButton>
 
-        <ToolbarButton onClick={() => setFilePickerMenuOpen(true)}>
-          <Folder />
-        </ToolbarButton>
+          <ToolbarButton onClick={() => setFilePickerMenuOpen(true)}>
+            <Folder />
+          </ToolbarButton>
 
-        <ToolbarButton onClick={() => console.log('TODO print functionality')}>
-          <Print />
-        </ToolbarButton>
+          <ToolbarButton onClick={() => console.log('TODO print functionality')}>
+            <Print />
+          </ToolbarButton>
 
-        <ToolbarButton onClick={() => setFullscreen(!isFullscreen())}>
-          {isFullscreen() ? <FullscreenExit /> : <Fullscreen />}
-        </ToolbarButton>
+          <ToolbarButton onClick={() => setFullscreen(!isFullscreen())}>
+            {isFullscreen() ? <FullscreenExit /> : <Fullscreen />}
+          </ToolbarButton>
 
-        {/* <ToolbarButton>
+          {/* <ToolbarButton>
             <Settings />
           </ToolbarButton> */}
-      </ButtonGroup>
+        </ButtonGroup>
+      </ThemeProvider>
     </ThemeProvider>
   )
 }
