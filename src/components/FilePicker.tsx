@@ -6,7 +6,7 @@ import { FilingCabinet } from '../utils/FilingCabinet'
 import { UiBox } from '../utils/UiBox'
 
 export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean) => void }) => {
-  const [files, setFiles] = createSignal<Array<String>>([])
+  const [files, setFiles] = createSignal<Array<string>>([])
 
   const loadFileNames = async () => {
     const keys = await FilingCabinet.index()
@@ -33,7 +33,7 @@ export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean)
           {(item, index) => {
             return (
               <Box>
-                <span>{item}</span>
+                {item}
                 <IconButton>
                   <DeleteIcon />
                 </IconButton>
