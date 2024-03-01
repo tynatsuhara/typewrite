@@ -31,7 +31,7 @@ export const Typewriter = () => {
     if (Doc.newFrame()) {
       Doc.setNewFrame(false)
       const [x, y] = Doc.caretPosition()
-      Doc.setFrames([...Doc.frames, { text: '', x, y }])
+      Doc.setFrames(Doc.frames.length, { text: '', x, y })
     }
 
     const id = `frame-${Doc.frames.length - 1}`
