@@ -1,7 +1,6 @@
 # typewrite
 
-I originally wrote this for the purpose of creating digital typewriter art.
-It functions as a typewriter with infinitely-big paper. Neat!
+a digital typewriter with infinitely-big paper. extremely useful!
 
 ## Usage
 
@@ -25,11 +24,6 @@ It correctly bundles Solid in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
-
-## Roadmap
-
-- serialization/saving/printing
-- toolbar?
 
 ## Credits
 
