@@ -24,6 +24,7 @@ export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean)
     setName(newName)
     Doc.setName(newName)
     FilingCabinet.put()
+    props.setOpen(false)
   }
 
   return (

@@ -11,10 +11,10 @@ export const ToolbarButton = (props: ButtonProps) => {
       {...DEFAULT_PROPS}
       {...props}
       onClick={(e) => {
+        blur()
         if (typeof props.onClick === 'function') {
           props.onClick?.(e)
         }
-        blur()
       }}
     ></Button>
   )

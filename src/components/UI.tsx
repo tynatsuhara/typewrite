@@ -23,9 +23,12 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     // TODO fix colors
+    // background: {
+    //   paper: '#444444',
+    // },
     // primary: {
-    // contrastText: '#e6e4e1',
-    // main: '#444444',
+    //   contrastText: '#e6e4e1',
+    //   main: '#444444',
     // },
   },
 })
@@ -102,16 +105,11 @@ export const UI = () => {
           <Folder />
         </ToolbarButton>
 
-        <ToolbarButton>
+        <ToolbarButton onClick={() => console.log('TODO print functionality')}>
           <Print />
         </ToolbarButton>
 
-        <ToolbarButton
-          onClick={() => {
-            setFullscreen(!isFullscreen())
-            blur()
-          }}
-        >
+        <ToolbarButton onClick={() => setFullscreen(!isFullscreen())}>
           {isFullscreen() ? <FullscreenExit /> : <Fullscreen />}
         </ToolbarButton>
 

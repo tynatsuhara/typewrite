@@ -4,7 +4,7 @@ import { JSX } from 'solid-js/jsx-runtime'
 import { onEvent } from './onEvent'
 
 // TODO this doesnt seem to be working
-const [globalOpen, setGlobalOpen] = createSignal(false)
+const [globalOpen, setGlobalOpen] = createSignal<string | null>(null)
 export const isAnyMenuOpen = globalOpen
 
 export const UiBox = (props: {
@@ -18,15 +18,17 @@ export const UiBox = (props: {
 
   createEffect(() => {
     if (props.isOpen()) {
-      setGlobalOpen(true)
+      setGlobalOpen(props.id)
       console.log(`${props.id} opened`)
+    } else if (!props.isOpen() && globalOpen() === props.id) {
+      setGlobalOpen(null)
     }
   })
 
   onEvent('mousedown', (e) => {
     if (props.isOpen() && !ref?.matches(':hover')) {
       props.setOpen(false)
-      setGlobalOpen(false)
+      setGlobalOpen(null)
       console.log(`${props.id} closed`)
       console.log(e)
     }

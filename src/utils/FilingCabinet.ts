@@ -33,6 +33,8 @@ export const FilingCabinet = Object.freeze({
     console.log(`loaded document ${Doc.name()} data: ${data}`)
   },
 
+  remove: async (name: string): Promise<void> => localforage.removeItem(name),
+
   contains: async (document: string): Promise<boolean> => {
     const keys = await localforage.keys()
     return keys.includes(document)
