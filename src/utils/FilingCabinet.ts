@@ -18,7 +18,6 @@ export const FilingCabinet = Object.freeze({
       newFrame: Doc.newFrame(),
       timestamp: new Date().getTime(),
     }
-    console.log(`saving document ${Doc.name()} data: ${JSON.stringify(data)}`)
     await localforage.setItem(Doc.name()!, data)
     Doc.setHasUnsavedChanges(false)
   },
@@ -30,7 +29,6 @@ export const FilingCabinet = Object.freeze({
     Doc.setCaretPosition(data.caret)
     Doc.setNewFrame(data.newFrame)
     Doc.recenter()
-    console.log(`loaded document ${Doc.name()} data: ${data}`)
   },
 
   remove: async (name: string): Promise<void> => localforage.removeItem(name),

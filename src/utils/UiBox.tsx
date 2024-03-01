@@ -18,7 +18,6 @@ export const UiBox = (props: {
   createEffect(() => {
     if (props.isOpen()) {
       setGlobalOpen(props.id)
-      console.log(`${props.id} opened`)
     } else if (!props.isOpen() && globalOpen() === props.id) {
       setGlobalOpen(null)
     }
@@ -28,8 +27,6 @@ export const UiBox = (props: {
     if (props.isOpen() && !ref?.matches(':hover')) {
       props.setOpen(false)
       setGlobalOpen(null)
-      console.log(`${props.id} closed`)
-      console.log(e)
     }
   })
 

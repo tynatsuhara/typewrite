@@ -12,12 +12,10 @@ export const createFullscreenSignal = (): [Accessor<boolean>, (full: boolean) =>
         })
         .then(() => {
           setFullscreen(true)
-          console.log('fullscreen enabled')
         })
     } else {
       return document.exitFullscreen().then(() => {
         setFullscreen(false)
-        console.log('fullscreen disabled')
       })
     }
   }
