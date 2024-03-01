@@ -1,3 +1,4 @@
+import { Box } from '@suid/material'
 import { createSignal } from 'solid-js'
 import { Doc } from '../core/Doc'
 import { Frame } from '../types'
@@ -26,5 +27,9 @@ export const PrintView = () => {
     return [...Doc.frames].map((f) => ({ ...f, x: f.x - minX, y: f.y - minY }))
   }
 
-  return <TextFrames frames={normalized()} />
+  return (
+    <Box sx={{ scale: '.6', transformOrigin: 'top left' }}>
+      <TextFrames frames={normalized()} />
+    </Box>
+  )
 }
