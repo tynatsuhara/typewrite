@@ -13,7 +13,7 @@ import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
 import { onEvent } from '../utils/onEvent'
 import { FilePicker } from './FilePicker'
-import { setPrintView } from './PrintView'
+import { printDoc } from './PrintView'
 import { SaveAsMenu } from './SaveAsMenu'
 import { ToolbarButton } from './ToolbarButton'
 
@@ -64,9 +64,13 @@ export const UI = () => {
   })
 
   onEvent('keydown', (e) => {
-    if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault()
-      saveFn()
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 's') {
+        e.preventDefault()
+        saveFn()
+      } else if (e.key === 'p') {
+        printDoc()
+      }
     }
   })
 
@@ -109,13 +113,7 @@ export const UI = () => {
             <Folder />
           </ToolbarButton>
 
-          <ToolbarButton
-            onClick={() => {
-              setPrintView(true)
-              print()
-              setPrintView(false)
-            }}
-          >
+          <ToolbarButton onClick={printDoc}>
             <Print />
           </ToolbarButton>
 

@@ -3,7 +3,14 @@ import { Doc } from '../core/Doc'
 import { Frame } from '../types'
 import { TextFrames } from './TextFrames'
 
-export const [isPrintView, setPrintView] = createSignal(false)
+const [printView, setPrintView] = createSignal(false)
+export const isPrintView = printView
+
+export const printDoc = () => {
+  setPrintView(true)
+  print()
+  setPrintView(false)
+}
 
 export const PrintView = () => {
   const normalized = (): Array<Frame> => {
@@ -19,5 +26,5 @@ export const PrintView = () => {
     return [...Doc.frames].map((f) => ({ ...f, x: f.x - minX, y: f.y - minY }))
   }
 
-  return <TextFrames />
+  return <TextFrames frames={normalized()} />
 }

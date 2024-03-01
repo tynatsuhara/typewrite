@@ -133,7 +133,7 @@ export const Typewriter = () => {
         style={{ left: `${Doc.offset()[0]}px`, top: `${Doc.offset()[1]}px` }}
       >
         <Caret position={Doc.caretPosition()} />
-        <TextFrames />
+        <TextFrames frames={Doc.frames} />
       </div>
     </div>
   )

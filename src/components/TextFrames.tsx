@@ -1,10 +1,10 @@
 import { For } from 'solid-js'
 import styles from '../App.module.css'
-import { Doc } from '../core/Doc'
+import { Frame } from '../types'
 
-export const TextFrames = () => {
+export const TextFrames = (props: { frames: Array<Frame> }) => {
   return (
-    <For each={Doc.frames}>
+    <For each={props.frames}>
       {(frame, index) => (
         <div
           class={styles.MovableType}
