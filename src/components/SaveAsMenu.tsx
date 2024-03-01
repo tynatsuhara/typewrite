@@ -45,6 +45,11 @@ export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean)
             setName(e.target.value)
           }}
           error={!!error()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              save()
+            }
+          }}
         />
         <Typography variant="h6" component="h2"></Typography>
         <Button variant="contained" size="large" onClick={save} sx={{ mt: '1rem' }}>

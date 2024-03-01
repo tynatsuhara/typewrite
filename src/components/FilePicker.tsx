@@ -3,6 +3,7 @@ import EditIcon from '@suid/icons-material/Edit'
 
 import { Box, Divider, IconButton, Typography, useTheme } from '@suid/material'
 import { For, createEffect, createSignal } from 'solid-js'
+import { Doc } from '../core/Doc'
 import { FilingCabinet } from '../utils/FilingCabinet'
 import { UiBox } from '../utils/UiBox'
 
@@ -64,6 +65,10 @@ export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean)
                       onClick={() => {
                         FilingCabinet.remove(item)
                         setFiles([...files()].filter((f) => f !== item))
+                        if (Doc.name() === item) {
+                          Doc.setHasUnsavedChanges(true)
+                          Doc.setName(null)
+                        }
                       }}
                     >
                       <DeleteIcon />
