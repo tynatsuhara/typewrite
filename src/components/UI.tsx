@@ -13,6 +13,7 @@ import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
 import { onEvent } from '../utils/onEvent'
 import { FilePicker } from './FilePicker'
+import { setPrintView } from './PrintView'
 import { SaveAsMenu } from './SaveAsMenu'
 import { ToolbarButton } from './ToolbarButton'
 
@@ -108,7 +109,13 @@ export const UI = () => {
             <Folder />
           </ToolbarButton>
 
-          <ToolbarButton onClick={() => console.log('TODO print functionality')}>
+          <ToolbarButton
+            onClick={() => {
+              setPrintView(true)
+              print()
+              setPrintView(false)
+            }}
+          >
             <Print />
           </ToolbarButton>
 

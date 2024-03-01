@@ -1,10 +1,11 @@
-import { For, createSignal } from 'solid-js'
+import { createSignal } from 'solid-js'
 import styles from '../App.module.css'
 import { Doc } from '../core/Doc'
 import { Sounds } from '../utils/Sounds'
 import { isAnyMenuOpen } from '../utils/UiBox'
 import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
+import { TextFrames } from './TextFrames'
 
 const VALID_KEYS = [
   ...' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890€$+-=*/÷%"\'#&_(),.;:?!¿¡\\',
@@ -132,21 +133,7 @@ export const Typewriter = () => {
         style={{ left: `${Doc.offset()[0]}px`, top: `${Doc.offset()[1]}px` }}
       >
         <Caret position={Doc.caretPosition()} />
-
-        <For each={Doc.frames}>
-          {(frame, index) => (
-            <div
-              class={styles.MovableType}
-              style={{
-                left: `${frame.x}px`,
-                top: `${frame.y}px`,
-              }}
-              id={`frame-${index()}`}
-            >
-              {frame.text}
-            </div>
-          )}
-        </For>
+        <TextFrames />
       </div>
     </div>
   )
