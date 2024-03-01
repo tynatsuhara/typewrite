@@ -31,5 +31,10 @@ export const FilingCabinet = Object.freeze({
     console.log(`loaded document ${Doc.name()} data: ${data}`)
   },
 
+  contains: async (document: string): Promise<boolean> => {
+    const keys = await localforage.keys()
+    return keys.includes(document)
+  },
+
   index: async () => localforage.keys(),
 })
