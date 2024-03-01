@@ -2,6 +2,7 @@ import { For, createSignal } from 'solid-js'
 import styles from '../App.module.css'
 import { Doc } from '../core/Doc'
 import { Sounds } from '../utils/Sounds'
+import { isAnyMenuOpen } from '../utils/UiBox'
 import { onEvent } from '../utils/onEvent'
 import { Caret } from './Caret'
 
@@ -79,7 +80,7 @@ export const Typewriter = () => {
     const onMouseDown = () => setMouseDown(true)
     const onMouseUp = () => setMouseDown(false)
     const onMouseMove = (e: MouseEvent) => {
-      if (!isMouseDown()) {
+      if (!isMouseDown() || isAnyMenuOpen()) {
         return
       }
 
@@ -96,7 +97,7 @@ export const Typewriter = () => {
       }
     }
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
+      if (isAnyMenuOpen() || e.repeat || e.metaKey || e.ctrlKey || e.altKey) {
         return
       } else if (VALID_KEYS.includes(e.key)) {
         type(e.key)
@@ -107,7 +108,9 @@ export const Typewriter = () => {
       }
     }
     const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'Shift') {
+      if (isAnyMenuOpen()) {
+        return
+      } else if (e.key === 'Shift') {
         setKeysDown({ ...keysDown(), [e.key]: false })
       }
     }

@@ -12,6 +12,8 @@ import { Vector2 } from '../types'
 import { FilingCabinet } from '../utils/FilingCabinet'
 import { createFullscreenSignal } from '../utils/Fullscreen'
 import { onEvent } from '../utils/onEvent'
+import { FilePicker } from './FilePicker'
+import { SaveAsMenu } from './SaveAsMenu'
 import { ToolbarButton } from './ToolbarButton'
 
 const TOOLBAR_HOVER_MARGIN: Vector2 = [150, 400]
@@ -20,22 +22,32 @@ const TOOLBAR_OFFSCREEN_POS = '-230px'
 const theme = createTheme({
   palette: {
     mode: 'dark',
-    primary: {
-      contrastText: '#e6e4e1',
-      main: '#444444',
-    },
+    // TODO fix colors
+    // primary: {
+    // contrastText: '#e6e4e1',
+    // main: '#444444',
+    // },
   },
 })
 
-// TODO: hide offscreen unless hovering
-// TODO: figure out colors
+// TODO: make sure you can't open other menus when one's already open. maybe it'll close so that's already fine?
 export const UI = () => {
   const [isFullscreen, setFullscreen] = createFullscreenSignal()
   const [isHoveringToolbarArea, setIsHoveringToolbarArea] = createSignal(false)
+  const [isFilePickerMenuOpen, setFilePickerMenuOpen] = createSignal(false)
+  const [isSaveAsMenuOpen, setSaveAsMenuOpen] = createSignal(false)
+
+  const saveAsFn = () => {
+    setSaveAsMenuOpen(true)
+  }
 
   const saveFn = () => {
-    // TODO save as, prompt for name
-    FilingCabinet.put()
+    if (!Doc.name()) {
+      saveAsFn()
+    } else {
+      // TODO save as, prompt for name
+      FilingCabinet.put()
+    }
   }
 
   onEvent('mousemove', (e) => {
@@ -54,6 +66,8 @@ export const UI = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <FilePicker isOpen={isFilePickerMenuOpen} setOpen={setFilePickerMenuOpen} />
+      <SaveAsMenu isOpen={isSaveAsMenuOpen} setOpen={setSaveAsMenuOpen} />
       <ButtonGroup
         color="primary"
         variant="contained"
@@ -79,7 +93,7 @@ export const UI = () => {
           )}
         </ToolbarButton>
 
-        <ToolbarButton>
+        <ToolbarButton onClick={saveAsFn}>
           <SaveAs />
         </ToolbarButton>
 

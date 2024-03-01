@@ -10,7 +10,7 @@ const getCenterOffset = (): Vector2 => {
 }
 
 // null represents this file has never been saved
-const [name, setName] = createSignal<string | null>('TODOname')
+const [name, setName] = createSignal<string | null>(null)
 const [frames, setFrames] = createStore<Array<Frame>>([])
 const [hasUnsavedChanges, setHasUnsavedChanges] = createSignal(false)
 const [caretPosition, setCaretPosition] = createSignal<Vector2>([0, 0])
