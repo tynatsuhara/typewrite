@@ -1,4 +1,4 @@
-import FileOpen from '@suid/icons-material/FileOpen'
+import Folder from '@suid/icons-material/Folder'
 import Fullscreen from '@suid/icons-material/Fullscreen'
 import FullscreenExit from '@suid/icons-material/FullscreenExit'
 import Print from '@suid/icons-material/Print'
@@ -34,8 +34,8 @@ const theme = createTheme({
 export const UI = () => {
   const [isFullscreen, setFullscreen] = createFullscreenSignal()
   const [isHoveringToolbarArea, setIsHoveringToolbarArea] = createSignal(false)
-  const [isFilePickerMenuOpen, setFilePickerMenuOpen] = createSignal(false)
   const [isSaveAsMenuOpen, setSaveAsMenuOpen] = createSignal(false)
+  const [isFilePickerMenuOpen, setFilePickerMenuOpen] = createSignal(false)
 
   const saveAsFn = () => {
     setSaveAsMenuOpen(true)
@@ -68,6 +68,7 @@ export const UI = () => {
     <ThemeProvider theme={theme}>
       <FilePicker isOpen={isFilePickerMenuOpen} setOpen={setFilePickerMenuOpen} />
       <SaveAsMenu isOpen={isSaveAsMenuOpen} setOpen={setSaveAsMenuOpen} />
+
       <ButtonGroup
         color="primary"
         variant="contained"
@@ -97,8 +98,8 @@ export const UI = () => {
           <SaveAs />
         </ToolbarButton>
 
-        <ToolbarButton onClick={() => FilingCabinet.get('TODOname')}>
-          <FileOpen />
+        <ToolbarButton onClick={() => setFilePickerMenuOpen(true)}>
+          <Folder />
         </ToolbarButton>
 
         <ToolbarButton>

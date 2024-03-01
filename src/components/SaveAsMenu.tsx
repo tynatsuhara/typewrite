@@ -27,7 +27,7 @@ export const SaveAsMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean)
   }
 
   return (
-    <UiBox {...props}>
+    <UiBox {...props} id="save-as">
       <Box
         sx={{
           width: '400px',

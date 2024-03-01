@@ -6,6 +6,7 @@ type SaveFormat = {
   frames: Array<Frame>
   caret: Vector2
   newFrame: boolean
+  timestamp: number
 }
 
 export const FilingCabinet = Object.freeze({
@@ -15,6 +16,7 @@ export const FilingCabinet = Object.freeze({
       frames: JSON.parse(JSON.stringify(Doc.frames)),
       caret: Doc.caretPosition(),
       newFrame: Doc.newFrame(),
+      timestamp: new Date().getTime(),
     }
     console.log(`saving document ${Doc.name()} data: ${JSON.stringify(data)}`)
     await localforage.setItem(Doc.name()!, data)

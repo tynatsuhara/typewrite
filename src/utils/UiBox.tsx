@@ -11,6 +11,7 @@ export const UiBox = (props: {
   isOpen: () => boolean
   setOpen: (b: boolean) => void
   children: JSX.Element
+  id: string
 }) => {
   const theme = useTheme()
   let ref: HTMLDivElement | undefined = undefined
@@ -18,26 +19,30 @@ export const UiBox = (props: {
   createEffect(() => {
     if (props.isOpen()) {
       setGlobalOpen(true)
-      console.log('dsalfsjghdli')
+      console.log(`${props.id} opened`)
     }
   })
 
   onEvent('mousedown', (e) => {
-    if (!ref?.matches(':hover')) {
+    if (props.isOpen() && !ref?.matches(':hover')) {
       props.setOpen(false)
       setGlobalOpen(false)
+      console.log(`${props.id} closed`)
+      console.log(e)
     }
   })
 
   return (
     <Box
+      id={props.id}
       ref={ref}
       sx={{
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        zIndex: 10,
+        // make sure an open thing always has a higher z-index to make button stuff work right
+        zIndex: props.isOpen() ? 10 : 9,
       }}
     >
       <Grow in={props.isOpen()}>

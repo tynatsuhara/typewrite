@@ -1,20 +1,46 @@
-import { Box, Typography } from '@suid/material'
+import DeleteIcon from '@suid/icons-material/Delete'
+
+import { Box, IconButton } from '@suid/material'
+import { For, createEffect, createSignal } from 'solid-js'
+import { FilingCabinet } from '../utils/FilingCabinet'
 import { UiBox } from '../utils/UiBox'
 
 export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean) => void }) => {
+  const [files, setFiles] = createSignal<Array<String>>([])
+
+  const loadFileNames = async () => {
+    const keys = await FilingCabinet.index()
+    keys.sort()
+    setFiles(keys)
+  }
+
+  createEffect(() => {
+    if (props.isOpen()) {
+      loadFileNames()
+    }
+  })
+
+  // TODO: handle the zero case
+
   return (
-    <UiBox {...props}>
+    <UiBox {...props} id="file-picker">
       <Box
         sx={{
           width: '400px',
         }}
       >
-        <Typography variant="h6" component="h2">
-          Text in a modal
-        </Typography>
-        <Typography sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </Typography>
+        <For each={files()}>
+          {(item, index) => {
+            return (
+              <Box>
+                <span>{item}</span>
+                <IconButton>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            )
+          }}
+        </For>
       </Box>
     </UiBox>
   )
