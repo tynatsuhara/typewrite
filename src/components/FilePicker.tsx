@@ -91,7 +91,7 @@ export const FilePicker = (props: { isOpen: () => boolean; setOpen: (b: boolean)
         sx={{
           width: '400px',
           maxHeight: '600px',
-          overflow: 'scroll',
+          overflowY: 'auto',
         }}
       >
         {content()}

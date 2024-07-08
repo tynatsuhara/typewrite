@@ -10,7 +10,6 @@ export const HelpMenu = (props: { isOpen: () => boolean; setOpen: (b: boolean) =
         sx={{
           width: '400px',
           maxHeight: '600px',
-          overflow: 'scroll',
         }}
       >
         <Typography variant="body1" color={theme.palette.text.primary}>
